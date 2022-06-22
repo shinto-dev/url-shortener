@@ -1,0 +1,15 @@
+### Shortening a URL
+POST {{base_url}}/v1/short-url
+Content-Type: application/json
+
+{
+  "original_url": "https://github.com/shinto-dev/linear-programming",
+  "custom_alias": "linearp"
+}
+
+### Redirecting a short url
+GET {{base_url}}/custom-url
+
+
+###
+GET {{base_url}}/hello-world
