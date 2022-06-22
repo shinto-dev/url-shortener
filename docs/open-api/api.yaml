@@ -1,0 +1,53 @@
+openapi: "3.0.0"
+info:
+  title: "URL Shortener"
+  description: "A simple URL shortener service!"
+  version: "0.0.1"
+servers:
+  - url: http://localhost:8080
+paths:
+  /v1/short-url:
+    post:
+      tags:
+        - short-url
+      operationId: "create"
+      summary: "Generates a short url from the input url"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: ["original_url"]
+              properties:
+                original_url:
+                  type: "string"
+                  description: Original URL
+                custom_alias:
+                  type: "string"
+                  description: Custom alias which will be used as the short url id.
+
+      responses:
+        201:
+          description: "short url created successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  short_url_id:
+                    type: string
+                    description: |
+                      Generated short url id. You will be able to access the long url with the help of short url id.
+
+
+  /{short-url-id}:
+    get:
+      tags:
+        - short-url
+      operationId: "get"
+      summary: "Redirects the short url to the actual long url"
+      responses:
+        302:
+          description: "redirects the url to actual url successfully"
+        404:
+          description: "short url does not exists"
