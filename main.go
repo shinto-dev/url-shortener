@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"os/signal"
@@ -20,7 +21,7 @@ func main() {
 	go func() {
 		fmt.Printf("starting HTTP server, listening at %d\n", 8080)
 		if err := server.ListenAndServe(); err != nil {
-			fmt.Errorf("failed to start the server")
+			logrus.Fatal("failed to start the server")
 		}
 
 	}()
@@ -29,10 +30,10 @@ func main() {
 	signal.Notify(sigquit, os.Interrupt, syscall.SIGTERM)
 
 	_ = <-sigquit
-	fmt.Println("gracefully shutting down the server")
+	logrus.Info("gracefully shutting down the server")
 
 	if err := server.Shutdown(context.Background()); err != nil {
-		fmt.Errorf("unable to shutdown the server")
+		logrus.Error("unable to shutdown the server")
 		return
 	}
 }
