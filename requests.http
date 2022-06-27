@@ -1,6 +1,7 @@
 ### Shortening a URL
 POST {{base_url}}/v1/short-url
 Content-Type: application/json
+Authorization: Basic {{token}}
 
 {
   "original_url": "https://github.com/shinto-dev/linear-programming",

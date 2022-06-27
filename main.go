@@ -3,16 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"url-shortner/internal/handler"
+	"url-shortner/internal/httphandler"
+
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	router := handler.API()
+	router := httphandler.API()
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", 8080),
 		Handler: router,
