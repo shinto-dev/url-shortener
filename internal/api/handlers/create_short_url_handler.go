@@ -1,11 +1,15 @@
-package httphandler
+package handlers
 
 import (
 	"encoding/json"
 	"net/http"
 	"url-shortner/internal/shorturl"
 	"url-shortner/platform/apperror"
+	"url-shortner/platform/observation/apm"
+	"url-shortner/platform/observation/logging"
 	"url-shortner/platform/web"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 func Create(shortURLService shorturl.Service) http.HandlerFunc {
@@ -32,10 +36,18 @@ func Create(shortURLService shorturl.Service) http.HandlerFunc {
 		return req, nil
 	}
 
+	hist := apm.NewHistogram("create_short_url")
+
 	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := logging.WithLogger(r.Context())
+		ctx = apm.WithValue(ctx, hist)
+
+		timer := prometheus.NewTimer(hist.WithLabelValues("service", "handler"))
+		defer timer.ObserveDuration()
+
 		req, err := parseCreateShortURLRequest(w, r)
 		if err != nil {
-			web.HandleError(w, err)
+			web.HandleError(ctx, w, err)
 			return
 		}
 
@@ -44,7 +56,7 @@ func Create(shortURLService shorturl.Service) http.HandlerFunc {
 			CustomAlias: req.CustomAlias,
 		})
 		if err != nil {
-			web.HandleError(w, err)
+			web.HandleError(ctx, w, err)
 			return
 		}
 

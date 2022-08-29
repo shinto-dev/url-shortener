@@ -1,4 +1,4 @@
-package httphandler_test
+package handlers_test
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"url-shortner/internal/httphandler"
+	"url-shortner/internal/api/handlers"
 	"url-shortner/internal/shorturl"
 	"url-shortner/platform/apperror"
 
@@ -35,7 +35,7 @@ func TestCreate(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/short-url", strings.NewReader(""))
 		w := httptest.NewRecorder()
 
-		handler := httphandler.Create(nil)
+		handler := handlers.Create(nil)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -46,7 +46,7 @@ func TestCreate(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/short-url", strings.NewReader("{}"))
 		w := httptest.NewRecorder()
 
-		handler := httphandler.Create(nil)
+		handler := handlers.Create(nil)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -64,7 +64,7 @@ func TestCreate(t *testing.T) {
 
 		mockShortURLService := shorturl.NewMockService(t)
 		mockShortURLCreate(mockShortURLService, originalURL, "", expectedShortURLToken)
-		handler := httphandler.Create(mockShortURLService)
+		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusCreated, w.Code)
@@ -84,7 +84,7 @@ func TestCreate(t *testing.T) {
 
 		mockShortURLService := shorturl.NewMockService(t)
 		mockShortURLCreate(mockShortURLService, originalURL, customAlias, customAlias)
-		handler := httphandler.Create(mockShortURLService)
+		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusCreated, w.Code)
@@ -105,7 +105,7 @@ func TestCreate(t *testing.T) {
 		mockShortURLService := shorturl.NewMockService(t)
 		mockShortURLService.On("Create", mock.Anything).
 			Return(shorturl.ShortURL{}, apperror.NewError(shorturl.ErrCustomURLAlreadyExists, "custom url already exists"))
-		handler := httphandler.Create(mockShortURLService)
+		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -123,7 +123,7 @@ func TestCreate(t *testing.T) {
 		mockShortURLService := shorturl.NewMockService(t)
 		mockShortURLService.On("Create", mock.Anything).
 			Return(shorturl.ShortURL{}, errors.New("unexpected error"))
-		handler := httphandler.Create(mockShortURLService)
+		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code)

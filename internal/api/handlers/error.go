@@ -1,4 +1,4 @@
-package httphandler
+package handlers
 
 import (
 	"url-shortner/platform/apperror"

@@ -1,9 +1,11 @@
 package web
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"url-shortner/platform/apperror"
+	"url-shortner/platform/observation/logging"
 )
 
 type Error struct {
@@ -18,9 +20,10 @@ func JSON(w http.ResponseWriter, status int, data interface{}) error {
 	return json.NewEncoder(w).Encode(data)
 }
 
-func HandleError(w http.ResponseWriter, err error) {
+func HandleError(ctx context.Context, w http.ResponseWriter, err error) {
 	appErr := apperror.FindError(err)
 	if appErr == nil {
+		logging.FromContext(ctx).Error("unexpected error!", err)
 		_ = JSON(w, http.StatusInternalServerError, Error{
 			Message: "internal error",
 		})
