@@ -1,40 +1,25 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"url-shortner/internal/api"
+	"url-shortner/cmd"
+	"url-shortner/platform/observation/logging"
 
-	"github.com/sirupsen/logrus"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 func main() {
-	router := api.API()
-	server := http.Server{
-		Addr:    fmt.Sprintf(":%d", 8080),
-		Handler: router,
+	err := run()
+	if err != nil {
+		logging.WithFields(zap.Error(err)).Fatal("error while starting the app")
 	}
+}
 
-	go func() {
-		fmt.Printf("starting HTTP server, listening at %d\n", 8080)
-		if err := server.ListenAndServe(); err != nil {
-			logrus.Fatal("failed to start the server")
-		}
-
-	}()
-
-	sigquit := make(chan os.Signal, 1)
-	signal.Notify(sigquit, os.Interrupt, syscall.SIGTERM)
-
-	_ = <-sigquit
-	logrus.Info("gracefully shutting down the server")
-
-	if err := server.Shutdown(context.Background()); err != nil {
-		logrus.Error("unable to shutdown the server")
-		return
+func run() error {
+	cli := cmd.NewCLI()
+	err := cli.Execute()
+	if err != nil {
+		return errors.Wrap(err, "error initializing the command")
 	}
+	return nil
 }
