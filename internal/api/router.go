@@ -11,15 +11,11 @@ import (
 
 func API() *mux.Router {
 	r := mux.NewRouter()
+	r.Use(web.PanicHandlerMiddleware)
 	r.Handle("/metrics", promhttp.Handler())
+	r.HandleFunc("/healthz", handlers.Health()).Methods(http.MethodGet)
+
 	r.HandleFunc("/v1/short-url", handlers.Create(nil)).
 		Methods(http.MethodPost)
-
-	r.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		_ = web.JSON(w, http.StatusOK, map[string]string{
-			"message": "Hello World",
-		})
-	}).Methods(http.MethodGet)
-
 	return r
 }
