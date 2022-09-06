@@ -1,5 +1,9 @@
 package shorturl
 
+import (
+	"context"
+)
+
 type CreateRequest struct {
 	OriginalURL string
 	CustomAlias string
@@ -10,7 +14,7 @@ type ShortURL struct {
 	ShortURLToken string
 }
 
-//  mockery --name=Service --inpackage
+//go:generate mockery --name Service --inpackage --case underscore
 type Service interface {
-	Create(CreateRequest) (ShortURL, error)
+	Create(ctx context.Context, req CreateRequest) (ShortURL, error)
 }

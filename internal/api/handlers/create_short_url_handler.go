@@ -5,11 +5,7 @@ import (
 	"net/http"
 	"url-shortner/internal/shorturl"
 	"url-shortner/platform/apperror"
-	"url-shortner/platform/observation/apm"
-	"url-shortner/platform/observation/logging"
 	"url-shortner/platform/web"
-
-	"github.com/prometheus/client_golang/prometheus"
 )
 
 func Create(shortURLService shorturl.Service) http.HandlerFunc {
@@ -36,32 +32,25 @@ func Create(shortURLService shorturl.Service) http.HandlerFunc {
 		return req, nil
 	}
 
-	hist := apm.NewHistogram("create_short_url")
-
-	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := logging.WithLogger(r.Context())
-		ctx = apm.WithValue(ctx, hist)
-
-		timer := prometheus.NewTimer(hist.WithLabelValues("service", "handler"))
-		defer timer.ObserveDuration()
+	return web.HandleRequest("create_short_url", func(w http.ResponseWriter, r *http.Request) error {
+		ctx := r.Context()
 
 		req, err := parseCreateShortURLRequest(w, r)
 		if err != nil {
-			web.HandleError(ctx, w, err)
-			return
+			return err
 		}
 
-		shortURL, err := shortURLService.Create(shorturl.CreateRequest{
+		shortURL, err := shortURLService.Create(ctx, shorturl.CreateRequest{
 			OriginalURL: req.OriginalURL,
 			CustomAlias: req.CustomAlias,
 		})
 		if err != nil {
-			web.HandleError(ctx, w, err)
-			return
+			return err
 		}
 
 		_ = web.JSON(w, http.StatusCreated, CreateShortURLResponse{
 			ShortURLToken: shortURL.ShortURLToken,
 		})
-	}
+		return nil
+	})
 }

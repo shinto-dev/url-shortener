@@ -103,7 +103,7 @@ func TestCreate(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		mockShortURLService := shorturl.NewMockService(t)
-		mockShortURLService.On("Create", mock.Anything).
+		mockShortURLService.On("Create", mock.Anything, mock.Anything).
 			Return(shorturl.ShortURL{}, apperror.NewError(shorturl.ErrCustomURLAlreadyExists, "custom url already exists"))
 		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
@@ -121,7 +121,7 @@ func TestCreate(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		mockShortURLService := shorturl.NewMockService(t)
-		mockShortURLService.On("Create", mock.Anything).
+		mockShortURLService.On("Create", mock.Anything, mock.Anything).
 			Return(shorturl.ShortURL{}, errors.New("unexpected error"))
 		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
@@ -134,7 +134,7 @@ func TestCreate(t *testing.T) {
 }
 
 func mockShortURLCreate(mockShortURLService *shorturl.MockService, originalURL, customAlias, expectedShortURLToken string) {
-	mockShortURLService.On("Create", shorturl.CreateRequest{
+	mockShortURLService.On("Create", mock.Anything, shorturl.CreateRequest{
 		OriginalURL: originalURL,
 		CustomAlias: customAlias,
 	}).Return(shorturl.ShortURL{

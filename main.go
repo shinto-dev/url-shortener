@@ -7,13 +7,13 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"url-shortner/internal/httphandler"
+	"url-shortner/internal/api"
 
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	router := httphandler.API()
+	router := api.API()
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", 8080),
 		Handler: router,
