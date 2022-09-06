@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -38,7 +39,7 @@ func (c *Config) Load() error {
 	}
 
 	e := enviper.New(viper.New())
-	e.AddConfigPath(pwd)
+	e.AddConfigPath(fmt.Sprintf("%s/resources", pwd))
 	e.SetConfigName(".config")
 
 	e.AutomaticEnv()
@@ -55,7 +56,7 @@ func (c *Config) Load() error {
 	}
 
 	if err := e.Unmarshal(c); err != nil {
-		return errors.Wrap(err, "error while reading config")
+		return errors.WithMessage(err, "error unmarshalling config")
 	}
 	return nil
 }

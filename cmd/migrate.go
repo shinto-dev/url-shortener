@@ -12,7 +12,7 @@ import (
 const (
 	migrateLong = "Connects to the database and runs the necessary database migrations configured by the application .yaml file\n" +
 		"located at ./.config.yaml, or any file type supported by https://github.com/spf13/viper.\n"
-	migrationsFilePath = "file://migrations"
+	migrationsFilePath = "file://resources/migrations"
 )
 
 func newMigrateUpCommand(conf config.Config) *cobra.Command {
