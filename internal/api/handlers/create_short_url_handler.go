@@ -5,15 +5,28 @@ import (
 	"net/http"
 	"url-shortner/internal/shorturl"
 	"url-shortner/platform/apperror"
+	"url-shortner/platform/observation"
+	"url-shortner/platform/observation/logging"
 	"url-shortner/platform/web"
+
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
-func Create(shortURLService shorturl.Service) http.HandlerFunc {
-	type CreateShortURLRequest struct {
-		OriginalURL string `json:"original_url"`
-		CustomAlias string `json:"custom_alias,omitempty"`
-	}
+type CreateShortURLRequest struct {
+	OriginalURL string `json:"original_url"`
+}
 
+func (c CreateShortURLRequest) Validate() error {
+	return validation.ValidateStruct(&c,
+		validation.Field(&c.OriginalURL,
+			validation.Required,
+			validation.Length(5, 255),
+			is.URL),
+	)
+}
+
+func Create(shortURLService shorturl.Core) http.HandlerFunc {
 	type CreateShortURLResponse struct {
 		ShortURLToken string `json:"short_url_token"`
 	}
@@ -23,10 +36,6 @@ func Create(shortURLService shorturl.Service) http.HandlerFunc {
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
 			return CreateShortURLRequest{}, apperror.NewError(ErrInvalidInput, "request body is invalid")
-		}
-
-		if req.OriginalURL == "" {
-			return CreateShortURLRequest{}, apperror.NewError(ErrInvalidInput, "original url is empty")
 		}
 
 		return req, nil
@@ -40,16 +49,20 @@ func Create(shortURLService shorturl.Service) http.HandlerFunc {
 			return err
 		}
 
+		observation.Add(ctx, logging.LField("original_url", req.OriginalURL))
+		if err := req.Validate(); err != nil {
+			return apperror.NewErrorWithCause(err, ErrInvalidInput, err.Error())
+		}
+
 		shortURL, err := shortURLService.Create(ctx, shorturl.CreateRequest{
 			OriginalURL: req.OriginalURL,
-			CustomAlias: req.CustomAlias,
 		})
 		if err != nil {
 			return err
 		}
 
 		_ = web.JSON(w, http.StatusCreated, CreateShortURLResponse{
-			ShortURLToken: shortURL.ShortURLToken,
+			ShortURLToken: shortURL.ShortURLPath,
 		})
 		return nil
 	})

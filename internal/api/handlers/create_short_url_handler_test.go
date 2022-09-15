@@ -10,7 +10,6 @@ import (
 	"testing"
 	"url-shortner/internal/api/handlers"
 	"url-shortner/internal/shorturl"
-	"url-shortner/platform/apperror"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -31,6 +30,8 @@ func TestCreate(t *testing.T) {
 		}
 	}
 
+	t.Parallel()
+
 	t.Run("should return bad request if request body is invalid", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/short-url", strings.NewReader(""))
 		w := httptest.NewRecorder()
@@ -50,10 +51,23 @@ func TestCreate(t *testing.T) {
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
-		assertJsonEquals(t, errorResponse("ERR-101", "original url is empty"), w.Body.String())
+		assertJsonEquals(t, errorResponse("ERR-101", "original_url: cannot be blank."), w.Body.String())
 	})
 
-	t.Run("should return short id if request body contain original_url", func(t *testing.T) {
+	t.Run("should return bad request if original_url is invalid", func(t *testing.T) {
+		req := newHttpTestRequest(t, http.MethodPost, map[string]interface{}{
+			"original_url": "invalid-url",
+		})
+		w := httptest.NewRecorder()
+
+		handler := handlers.Create(nil)
+		handler(w, req)
+
+		assert.Equal(t, http.StatusBadRequest, w.Code)
+		assertJsonEquals(t, errorResponse("ERR-101", "original_url: must be a valid URL."), w.Body.String())
+	})
+
+	t.Run("should return short id if request body contain valid original_url", func(t *testing.T) {
 		const originalURL = "https://github.com/shinto-dev/linear-programming"
 		const expectedShortURLToken = "abcde"
 
@@ -62,54 +76,13 @@ func TestCreate(t *testing.T) {
 		})
 		w := httptest.NewRecorder()
 
-		mockShortURLService := shorturl.NewMockService(t)
+		mockShortURLService := shorturl.NewMockCore(t)
 		mockShortURLCreate(mockShortURLService, originalURL, "", expectedShortURLToken)
 		handler := handlers.Create(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusCreated, w.Code)
 		assertJsonEquals(t, successResponse(expectedShortURLToken), w.Body.String())
-		mockShortURLService.AssertExpectations(t)
-	})
-
-	t.Run("should return custom alias if request body contain original_url and custom alias", func(t *testing.T) {
-		const originalURL = "https://github.com/shinto-dev/linear-programming"
-		const customAlias = "abcde"
-
-		req := newHttpTestRequest(t, http.MethodPost, map[string]interface{}{
-			"original_url": originalURL,
-			"custom_alias": customAlias,
-		})
-		w := httptest.NewRecorder()
-
-		mockShortURLService := shorturl.NewMockService(t)
-		mockShortURLCreate(mockShortURLService, originalURL, customAlias, customAlias)
-		handler := handlers.Create(mockShortURLService)
-		handler(w, req)
-
-		assert.Equal(t, http.StatusCreated, w.Code)
-		assertJsonEquals(t, successResponse(customAlias), w.Body.String())
-		mockShortURLService.AssertExpectations(t)
-	})
-
-	t.Run("should return error if custom alias already exists", func(t *testing.T) {
-		const originalURL = "https://github.com/shinto-dev/linear-programming"
-		const customAlias = "abcde"
-
-		req := newHttpTestRequest(t, http.MethodPost, map[string]interface{}{
-			"original_url": originalURL,
-			"custom_alias": customAlias,
-		})
-		w := httptest.NewRecorder()
-
-		mockShortURLService := shorturl.NewMockService(t)
-		mockShortURLService.On("Create", mock.Anything, mock.Anything).
-			Return(shorturl.ShortURL{}, apperror.NewError(shorturl.ErrCustomURLAlreadyExists, "custom url already exists"))
-		handler := handlers.Create(mockShortURLService)
-		handler(w, req)
-
-		assert.Equal(t, http.StatusBadRequest, w.Code)
-		assertJsonEquals(t, errorResponse("ERR-201", "custom url already exists"), w.Body.String())
 		mockShortURLService.AssertExpectations(t)
 	})
 
@@ -120,7 +93,7 @@ func TestCreate(t *testing.T) {
 		})
 		w := httptest.NewRecorder()
 
-		mockShortURLService := shorturl.NewMockService(t)
+		mockShortURLService := shorturl.NewMockCore(t)
 		mockShortURLService.On("Create", mock.Anything, mock.Anything).
 			Return(shorturl.ShortURL{}, errors.New("unexpected error"))
 		handler := handlers.Create(mockShortURLService)
@@ -133,12 +106,11 @@ func TestCreate(t *testing.T) {
 
 }
 
-func mockShortURLCreate(mockShortURLService *shorturl.MockService, originalURL, customAlias, expectedShortURLToken string) {
+func mockShortURLCreate(mockShortURLService *shorturl.MockCore, originalURL, customAlias, expectedShortURLToken string) {
 	mockShortURLService.On("Create", mock.Anything, shorturl.CreateRequest{
 		OriginalURL: originalURL,
-		CustomAlias: customAlias,
 	}).Return(shorturl.ShortURL{
-		ShortURLToken: expectedShortURLToken,
+		ShortURLPath: expectedShortURLToken,
 	}, nil)
 }
 

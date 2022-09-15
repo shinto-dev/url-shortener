@@ -11,7 +11,8 @@ import (
 func main() {
 	err := run()
 	if err != nil {
-		logging.WithFields(zap.Error(err)).Fatal("error while starting the app")
+		logging.WithFields(zap.Error(err)).
+			Fatal("error while starting the app")
 	}
 }
 

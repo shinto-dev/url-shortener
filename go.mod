@@ -4,10 +4,12 @@ go 1.18
 
 require (
 	github.com/gavv/httpexpect/v2 v2.3.1
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/gorilla/mux v1.8.0
 	github.com/iamolegga/enviper v1.4.0
+	github.com/itchyny/base58-go v0.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.12.2
 	github.com/spf13/cobra v1.5.0
@@ -21,6 +23,7 @@ require (
 require (
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
