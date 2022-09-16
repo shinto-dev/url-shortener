@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 	"url-shortener/platform/data"
+	"url-shortener/platform/observation/apm"
 
 	"gorm.io/gorm"
 )
@@ -27,6 +28,9 @@ func NewRepo(db *gorm.DB) *Repo {
 }
 
 func (r *Repo) GetByShortPath(ctx context.Context, shortPath string) (ShortURL, error) {
+	segment := apm.StartDataStoreSegment(ctx, "shorturl-get-by-short-path")
+	defer segment.ObserveDuration()
+
 	var shortURL ShortURL
 	err := r.db.WithContext(ctx).
 		First(&shortURL, "short_path = ?", shortPath).Error
