@@ -2,9 +2,9 @@ package web
 
 import (
 	"net/http"
-	"url-shortner/platform/observation"
-	"url-shortner/platform/observation/apm"
-	"url-shortner/platform/observation/logging"
+	"url-shortener/platform/observation"
+	"url-shortener/platform/observation/apm"
+	"url-shortener/platform/observation/logging"
 
 	"github.com/prometheus/client_golang/prometheus"
 )

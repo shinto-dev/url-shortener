@@ -2,8 +2,8 @@ package api
 
 import (
 	"net/http"
-	"url-shortner/internal/api/handlers"
-	"url-shortner/platform/web"
+	"url-shortener/internal/api/handlers"
+	"url-shortener/platform/web"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

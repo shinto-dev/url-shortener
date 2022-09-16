@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"url-shortner/platform/apperror"
+	"url-shortener/platform/apperror"
 )
 
 const (

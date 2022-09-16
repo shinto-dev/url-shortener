@@ -2,9 +2,9 @@ package shorturl
 
 import (
 	"context"
-	"url-shortner/internal/shorturl/repo"
-	"url-shortner/internal/shorturl/shortid"
-	"url-shortner/platform/apperror"
+	"url-shortener/internal/shorturl/repo"
+	"url-shortener/internal/shorturl/shortid"
+	"url-shortener/platform/apperror"
 
 	"gorm.io/gorm"
 )

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"url-shortner/platform/web"
+	"url-shortener/platform/web"
 )
 
 func Health() http.HandlerFunc {

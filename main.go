@@ -1,8 +1,8 @@
 package main
 
 import (
-	"url-shortner/cmd"
-	"url-shortner/platform/observation/logging"
+	"url-shortener/cmd"
+	"url-shortener/platform/observation/logging"
 
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

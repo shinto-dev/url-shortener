@@ -3,7 +3,7 @@ package repo
 import (
 	"context"
 	"time"
-	"url-shortner/platform/data"
+	"url-shortener/platform/data"
 
 	"gorm.io/gorm"
 )

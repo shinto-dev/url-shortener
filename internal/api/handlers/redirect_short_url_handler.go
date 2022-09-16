@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"url-shortner/internal/shorturl"
+	"url-shortener/internal/shorturl"
 )
 
 func RedirectURL(shortURLService shorturl.Core) http.HandlerFunc {

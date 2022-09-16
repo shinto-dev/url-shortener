@@ -3,11 +3,11 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"url-shortner/internal/shorturl"
-	"url-shortner/platform/apperror"
-	"url-shortner/platform/observation"
-	"url-shortner/platform/observation/logging"
-	"url-shortner/platform/web"
+	"url-shortener/internal/shorturl"
+	"url-shortener/platform/apperror"
+	"url-shortener/platform/observation"
+	"url-shortener/platform/observation/logging"
+	"url-shortener/platform/web"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"

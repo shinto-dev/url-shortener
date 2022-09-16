@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"url-shortner/platform/observation"
-	"url-shortner/platform/observation/logging"
+	"url-shortener/platform/observation"
+	"url-shortener/platform/observation/logging"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"

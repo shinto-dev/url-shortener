@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"url-shortner/platform/apperror"
-	"url-shortner/platform/observation/logging"
+	"url-shortener/platform/apperror"
+	"url-shortener/platform/observation/logging"
 )
 
 type Error struct {

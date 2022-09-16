@@ -3,10 +3,10 @@ package shorturl_test
 import (
 	"context"
 	"testing"
-	"url-shortner/internal/shorturl"
-	"url-shortner/internal/shorturl/repo"
-	"url-shortner/internal/test"
-	"url-shortner/platform/apperror"
+	"url-shortener/internal/shorturl"
+	"url-shortener/internal/shorturl/repo"
+	"url-shortener/internal/test"
+	"url-shortener/platform/apperror"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -7,9 +7,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"url-shortner/config"
-	"url-shortner/internal/api"
-	"url-shortner/platform/observation/logging"
+	"url-shortener/config"
+	"url-shortener/internal/api"
+	"url-shortener/platform/observation/logging"
 
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
