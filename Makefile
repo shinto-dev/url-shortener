@@ -19,3 +19,6 @@ migrateup:
 
 run: migrateup
 	go run main.go startserver
+
+image:
+	docker build -t url-shortener:latest .
