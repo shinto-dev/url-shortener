@@ -36,7 +36,7 @@ func TestCreate(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/short-url", strings.NewReader(""))
 		w := httptest.NewRecorder()
 
-		handler := handlers.Create(nil)
+		handler := handlers.HandleShortURLCreate(nil)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -47,7 +47,7 @@ func TestCreate(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/short-url", strings.NewReader("{}"))
 		w := httptest.NewRecorder()
 
-		handler := handlers.Create(nil)
+		handler := handlers.HandleShortURLCreate(nil)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -60,7 +60,7 @@ func TestCreate(t *testing.T) {
 		})
 		w := httptest.NewRecorder()
 
-		handler := handlers.Create(nil)
+		handler := handlers.HandleShortURLCreate(nil)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusBadRequest, w.Code)
@@ -78,7 +78,7 @@ func TestCreate(t *testing.T) {
 
 		mockShortURLService := shorturl.NewMockCore(t)
 		mockShortURLCreate(mockShortURLService, originalURL, "", expectedShortURLToken)
-		handler := handlers.Create(mockShortURLService)
+		handler := handlers.HandleShortURLCreate(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusCreated, w.Code)
@@ -96,7 +96,7 @@ func TestCreate(t *testing.T) {
 		mockShortURLService := shorturl.NewMockCore(t)
 		mockShortURLService.On("Create", mock.Anything, mock.Anything).
 			Return(shorturl.ShortURL{}, errors.New("unexpected error"))
-		handler := handlers.Create(mockShortURLService)
+		handler := handlers.HandleShortURLCreate(mockShortURLService)
 		handler(w, req)
 
 		assert.Equal(t, http.StatusInternalServerError, w.Code)

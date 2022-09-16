@@ -26,7 +26,7 @@ func (c CreateShortURLRequest) Validate() error {
 	)
 }
 
-func Create(shortURLService shorturl.Core) http.HandlerFunc {
+func HandleShortURLCreate(shortURLService shorturl.Core) http.HandlerFunc {
 	type CreateShortURLResponse struct {
 		ShortURLToken string `json:"short_url_token"`
 	}

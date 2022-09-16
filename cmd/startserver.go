@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"url-shortener/appcontext"
 	"url-shortener/config"
 	"url-shortener/internal/api"
 	"url-shortener/platform/observation/logging"
@@ -26,8 +27,13 @@ func newStartServerCommand(conf config.Config) *cobra.Command {
 
 func runHTTServerFunc(conf config.Config) func(_ *cobra.Command, _ []string) {
 	return func(_ *cobra.Command, _ []string) {
-		router := api.API()
+		appCtx, err := appcontext.Get(conf)
+		if err != nil {
+			logging.WithFields(zap.Error(err)).
+				Fatal("error while creating app context")
+		}
 
+		router := api.API(appCtx)
 		server := http.Server{
 			Addr:    fmt.Sprintf(":%d", conf.HTTPServer.Port),
 			Handler: router,
