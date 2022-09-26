@@ -1,3 +1,9 @@
 docs/*
 .github/*
 .idea/*
+.git/
+.gitgnore
+LICENSE
+README.md
+Makefile
+

@@ -1,2 +1,13 @@
-.idea
 resources/.config.yaml
+
+## MAC
+.DS_Store
+
+## WINDOWS
+Thumbs.db
+
+
+# Editor files
+.idea/
+*.iml
+*.swp
