@@ -18,7 +18,7 @@ func API(appCtx appcontext.AppContext) *mux.Router {
 
 	r.HandleFunc("/v1/short-url", handlers.HandleShortURLCreate(appCtx.ShortURLCore)).
 		Methods(http.MethodPost)
-	r.HandleFunc("/{short_url_token}", handlers.RedirectURL(appCtx.ShortURLCore)).
+	r.HandleFunc("/{short_url_token}", handlers.HandleRedirectURL(appCtx.ShortURLCore)).
 		Methods(http.MethodGet)
 	return r
 }
