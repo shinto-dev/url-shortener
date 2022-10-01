@@ -4,7 +4,8 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
-	"url-shortener/foundation/data"
+
+	"github.com/shinto-dev/url-shortener/foundation/data"
 
 	"github.com/itchyny/base58-go"
 	"gorm.io/gorm"

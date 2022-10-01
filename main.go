@@ -1,8 +1,8 @@
 package main
 
 import (
-	"url-shortener/cmd"
-	"url-shortener/foundation/observation/logging"
+	"github.com/shinto-dev/url-shortener/cmd"
+	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

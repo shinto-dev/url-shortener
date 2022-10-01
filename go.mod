@@ -1,4 +1,4 @@
-module url-shortener
+module github.com/shinto-dev/url-shortener
 
 go 1.18
 

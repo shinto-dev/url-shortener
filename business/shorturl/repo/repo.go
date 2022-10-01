@@ -3,8 +3,9 @@ package repo
 import (
 	"context"
 	"time"
-	"url-shortener/foundation/data"
-	"url-shortener/foundation/observation/apm"
+
+	"github.com/shinto-dev/url-shortener/foundation/data"
+	"github.com/shinto-dev/url-shortener/foundation/observation/apm"
 
 	"gorm.io/gorm"
 )

@@ -3,11 +3,12 @@ package shorturl_test
 import (
 	"context"
 	"testing"
-	"url-shortener/business/shorturl"
-	"url-shortener/business/shorturl/repo"
-	"url-shortener/business/test"
-	"url-shortener/foundation/apperror"
-	"url-shortener/foundation/observation/apm"
+
+	"github.com/shinto-dev/url-shortener/business/shorturl"
+	"github.com/shinto-dev/url-shortener/business/shorturl/repo"
+	"github.com/shinto-dev/url-shortener/business/test"
+	"github.com/shinto-dev/url-shortener/foundation/apperror"
+	"github.com/shinto-dev/url-shortener/foundation/observation/apm"
 
 	"github.com/stretchr/testify/assert"
 )

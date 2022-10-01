@@ -2,7 +2,8 @@ package test
 
 import (
 	"testing"
-	"url-shortener/foundation/data"
+
+	"github.com/shinto-dev/url-shortener/foundation/data"
 
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"

@@ -2,9 +2,10 @@ package service
 
 import (
 	"net/http"
-	"url-shortener/foundation/web"
-	"url-shortener/service/appcontext"
-	"url-shortener/service/handlers"
+
+	"github.com/shinto-dev/url-shortener/foundation/web"
+	"github.com/shinto-dev/url-shortener/service/appcontext"
+	"github.com/shinto-dev/url-shortener/service/handlers"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

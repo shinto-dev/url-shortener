@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"url-shortener/foundation/apperror"
+	"github.com/shinto-dev/url-shortener/foundation/apperror"
 )
 
 const (

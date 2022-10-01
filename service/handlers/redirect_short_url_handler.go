@@ -3,11 +3,12 @@ package handlers
 import (
 	"context"
 	"net/http"
-	"url-shortener/business/shorturl"
-	"url-shortener/foundation/apperror"
-	"url-shortener/foundation/observation"
-	"url-shortener/foundation/observation/logging"
-	"url-shortener/foundation/web"
+
+	"github.com/shinto-dev/url-shortener/business/shorturl"
+	"github.com/shinto-dev/url-shortener/foundation/apperror"
+	"github.com/shinto-dev/url-shortener/foundation/observation"
+	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
+	"github.com/shinto-dev/url-shortener/foundation/web"
 )
 
 func HandleRedirectURL(shortURLService shorturl.Core) http.HandlerFunc {

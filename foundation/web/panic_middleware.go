@@ -1,7 +1,6 @@
 package web
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -22,7 +21,7 @@ func PanicHandlerMiddleware(next http.Handler) http.Handler {
 func getPanicErr(recoverErr interface{}) error {
 	err, ok := recoverErr.(error)
 	if !ok {
-		return errors.New(fmt.Sprintf("%v", recoverErr))
+		return errors.Errorf("%v", recoverErr)
 	}
 	return err
 }

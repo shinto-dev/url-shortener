@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"url-shortener/foundation/observation"
-	"url-shortener/foundation/observation/trace"
+
+	"github.com/shinto-dev/url-shortener/foundation/observation"
+	"github.com/shinto-dev/url-shortener/foundation/observation/trace"
 
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"

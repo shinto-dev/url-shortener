@@ -2,9 +2,9 @@ package shorturl
 
 import (
 	"context"
-	"url-shortener/business/shorturl/repo"
-	"url-shortener/business/shorturl/shortid"
-	"url-shortener/foundation/apperror"
+
+	"github.com/shinto-dev/url-shortener/business/shorturl/repo"
+	"github.com/shinto-dev/url-shortener/business/shorturl/shortid"
 
 	"gorm.io/gorm"
 )
@@ -64,7 +64,7 @@ func (s *coreImpl) Get(ctx context.Context, shortURLPath string) (ShortURL, erro
 	}
 
 	if shortURLRecord == (repo.ShortURL{}) {
-		return ShortURL{}, apperror.NewError(ErrCodeShortURLNotFound, "custom alias already exists")
+		return ShortURL{}, ErrShortURLNotFound
 	}
 
 	return ShortURL{

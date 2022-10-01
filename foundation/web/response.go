@@ -4,8 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"url-shortener/foundation/apperror"
-	"url-shortener/foundation/observation/logging"
+
+	"github.com/shinto-dev/url-shortener/foundation/apperror"
+	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 
 	"go.uber.org/zap"
 )

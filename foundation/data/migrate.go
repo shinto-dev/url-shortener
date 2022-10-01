@@ -4,8 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"url-shortener/foundation/observation"
-	"url-shortener/foundation/observation/logging"
+
+	"github.com/shinto-dev/url-shortener/foundation/observation"
+	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"

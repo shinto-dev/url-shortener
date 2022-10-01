@@ -8,8 +8,9 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"url-shortener/business/shorturl"
-	"url-shortener/service/handlers"
+
+	"github.com/shinto-dev/url-shortener/business/shorturl"
+	"github.com/shinto-dev/url-shortener/service/handlers"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

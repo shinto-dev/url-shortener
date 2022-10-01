@@ -5,9 +5,10 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"url-shortener/business/shorturl"
-	"url-shortener/foundation/apperror"
-	"url-shortener/service/handlers"
+
+	"github.com/shinto-dev/url-shortener/business/shorturl"
+	"github.com/shinto-dev/url-shortener/foundation/apperror"
+	"github.com/shinto-dev/url-shortener/service/handlers"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"

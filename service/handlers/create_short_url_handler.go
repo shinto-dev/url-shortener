@@ -2,13 +2,13 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
-	"url-shortener/business/shorturl"
-	"url-shortener/foundation/apperror"
-	"url-shortener/foundation/observation"
-	"url-shortener/foundation/observation/logging"
-	"url-shortener/foundation/web"
+
+	"github.com/shinto-dev/url-shortener/business/shorturl"
+	"github.com/shinto-dev/url-shortener/foundation/apperror"
+	"github.com/shinto-dev/url-shortener/foundation/observation"
+	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
+	"github.com/shinto-dev/url-shortener/foundation/web"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -32,21 +32,11 @@ func HandleShortURLCreate(shortURLService shorturl.Core) http.HandlerFunc {
 		ShortURLToken string `json:"short_url_token"`
 	}
 
-	parseCreateShortURLRequest := func(r *http.Request) (CreateShortURLRequest, error) {
-		var req CreateShortURLRequest
-		err := json.NewDecoder(r.Body).Decode(&req)
-		if err != nil {
-			return CreateShortURLRequest{}, apperror.NewError(ErrInvalidInput, "request body is invalid")
-		}
-
-		return req, nil
-	}
-
 	return web.HandleRequest("create_short_url",
 		func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
-			req, err := parseCreateShortURLRequest(r)
-			if err != nil {
-				return err
+			var req CreateShortURLRequest
+			if err := web.Decode(r, &req); err != nil {
+				return apperror.NewError(ErrInvalidInput, "request body is invalid")
 			}
 
 			observation.Add(ctx, logging.LField("original_url", req.OriginalURL))

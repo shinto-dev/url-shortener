@@ -2,7 +2,8 @@ package handlers
 
 import (
 	"net/http"
-	"url-shortener/foundation/web"
+
+	"github.com/shinto-dev/url-shortener/foundation/web"
 )
 
 func Health() http.HandlerFunc {
