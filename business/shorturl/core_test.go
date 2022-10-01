@@ -7,6 +7,7 @@ import (
 	"url-shortener/business/shorturl/repo"
 	"url-shortener/business/test"
 	"url-shortener/platform/apperror"
+	"url-shortener/platform/observation/apm"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -14,6 +15,9 @@ import (
 func TestCreate(t *testing.T) {
 	db := test.ConnectTestDB(t)
 	core := shorturl.NewShortURLCore(db)
+
+	ctx := context.Background()
+	ctx = apm.WithAPM(ctx, "test") //fixme our tests should not worry about apm related configs
 
 	t.Run("should create a short url", func(t *testing.T) {
 		const originalURL = "https://www.google.com"
@@ -25,7 +29,7 @@ func TestCreate(t *testing.T) {
 			OriginalURL: originalURL,
 		}
 
-		shortURL, err := core.Create(context.Background(), req)
+		shortURL, err := core.Create(ctx, req)
 		assert.NoError(t, err)
 
 		assert.NotEmpty(t, shortURL.ShortURLPath)
@@ -42,6 +46,9 @@ func TestGet(t *testing.T) {
 	core := shorturl.NewShortURLCore(db)
 	testCtx := test.NewTestCtx(db)
 
+	ctx := context.Background()
+	ctx = apm.WithAPM(ctx, "test") //fixme our tests should not worry about apm related configs
+
 	t.Run("should get a short url", func(t *testing.T) {
 		const originalURL = "https://www.google1.com"
 		const shortPath = "short"
@@ -52,7 +59,7 @@ func TestGet(t *testing.T) {
 		})
 		defer testCtx.DeleteShortURLByOriginalURL(t, originalURL)
 
-		shortURL, err := core.Get(context.Background(), shortPath)
+		shortURL, err := core.Get(ctx, shortPath)
 		assert.NoError(t, err)
 
 		assert.Equal(t, shortPath, shortURL.ShortURLPath)
@@ -60,7 +67,7 @@ func TestGet(t *testing.T) {
 	})
 
 	t.Run("should return error if short url not found", func(t *testing.T) {
-		_, err := core.Get(context.Background(), "not-found")
+		_, err := core.Get(ctx, "not-found")
 		assert.Error(t, err)
 		assert.True(t, apperror.Is(err, shorturl.ErrCodeShortURLNotFound))
 	})
