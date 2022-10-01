@@ -21,7 +21,7 @@ func init() {
 	loggerConfig.EncoderConfig.TimeKey = "timestamp"
 	loggerConfig.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339)
 
-	logger, err := loggerConfig.Build()
+	logger, err := loggerConfig.Build(zap.AddCallerSkip(1))
 	if err != nil {
 		log.Fatal(err)
 	}
