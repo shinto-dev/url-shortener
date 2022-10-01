@@ -27,6 +27,13 @@ func NewRepo(db *gorm.DB) *Repo {
 	return &Repo{db: db, Repository: data.NewRepository[ShortURL, int64](db)}
 }
 
+func (r Repo) Create(ctx context.Context, shortURLRecord *ShortURL) error {
+	segment := apm.StartDataStoreSegment(ctx, "shorturl-create")
+	defer segment.ObserveDuration()
+
+	return r.Repository.Create(ctx, shortURLRecord)
+}
+
 func (r *Repo) GetByShortPath(ctx context.Context, shortPath string) (ShortURL, error) {
 	segment := apm.StartDataStoreSegment(ctx, "shorturl-get-by-short-path")
 	defer segment.ObserveDuration()

@@ -7,10 +7,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"url-shortener/appcontext"
 	"url-shortener/config"
-	"url-shortener/internal/api"
 	"url-shortener/platform/observation/logging"
+	"url-shortener/service"
+	"url-shortener/service/appcontext"
 
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
@@ -33,7 +33,7 @@ func runHTTServerFunc(conf config.Config) func(_ *cobra.Command, _ []string) {
 				Fatal("error while creating app context")
 		}
 
-		router := api.API(appCtx)
+		router := service.API(appCtx)
 		server := http.Server{
 			Addr:    fmt.Sprintf(":%d", conf.HTTPServer.Port),
 			Handler: router,

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"url-shortener/internal/shorturl"
+	"url-shortener/business/shorturl"
 	"url-shortener/platform/apperror"
 	"url-shortener/platform/observation"
 	"url-shortener/platform/observation/logging"

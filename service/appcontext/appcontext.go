@@ -1,8 +1,8 @@
 package appcontext
 
 import (
+	"url-shortener/business/shorturl"
 	"url-shortener/config"
-	"url-shortener/internal/shorturl"
 	"url-shortener/platform/data"
 )
 

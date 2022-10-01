@@ -1,10 +1,10 @@
-package api
+package service
 
 import (
 	"net/http"
-	"url-shortener/appcontext"
-	"url-shortener/internal/api/handlers"
 	"url-shortener/platform/web"
+	"url-shortener/service/appcontext"
+	"url-shortener/service/handlers"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

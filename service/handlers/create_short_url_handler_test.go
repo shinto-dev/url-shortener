@@ -8,8 +8,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"url-shortener/internal/api/handlers"
-	"url-shortener/internal/shorturl"
+	"url-shortener/business/shorturl"
+	"url-shortener/service/handlers"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

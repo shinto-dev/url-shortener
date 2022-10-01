@@ -5,9 +5,9 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"url-shortener/internal/api/handlers"
-	"url-shortener/internal/shorturl"
+	"url-shortener/business/shorturl"
 	"url-shortener/platform/apperror"
+	"url-shortener/service/handlers"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
