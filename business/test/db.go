@@ -2,7 +2,7 @@ package test
 
 import (
 	"testing"
-	"url-shortener/platform/data"
+	"url-shortener/foundation/data"
 
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"

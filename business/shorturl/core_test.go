@@ -6,8 +6,8 @@ import (
 	"url-shortener/business/shorturl"
 	"url-shortener/business/shorturl/repo"
 	"url-shortener/business/test"
-	"url-shortener/platform/apperror"
-	"url-shortener/platform/observation/apm"
+	"url-shortener/foundation/apperror"
+	"url-shortener/foundation/observation/apm"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -2,7 +2,7 @@ package service
 
 import (
 	"net/http"
-	"url-shortener/platform/web"
+	"url-shortener/foundation/web"
 	"url-shortener/service/appcontext"
 	"url-shortener/service/handlers"
 

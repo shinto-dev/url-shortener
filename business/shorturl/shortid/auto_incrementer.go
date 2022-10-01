@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"strconv"
 	"time"
-	"url-shortener/platform/data"
+	"url-shortener/foundation/data"
 
 	"github.com/itchyny/base58-go"
 	"gorm.io/gorm"

@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"url-shortener/platform/apperror"
-	"url-shortener/platform/observation/logging"
+	"url-shortener/foundation/apperror"
+	"url-shortener/foundation/observation/logging"
 
 	"go.uber.org/zap"
 )
@@ -19,7 +19,7 @@ type Error struct {
 	Message string `json:"message"`
 }
 
-func JSON(w http.ResponseWriter, status int, data interface{}) error {
+func JSON(w http.ResponseWriter, status int, data any) error {
 	w.Header().Set("Content-Type", mediaTypeApplicationJson)
 	w.WriteHeader(status)
 

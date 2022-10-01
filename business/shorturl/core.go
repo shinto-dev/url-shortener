@@ -4,7 +4,7 @@ import (
 	"context"
 	"url-shortener/business/shorturl/repo"
 	"url-shortener/business/shorturl/shortid"
-	"url-shortener/platform/apperror"
+	"url-shortener/foundation/apperror"
 
 	"gorm.io/gorm"
 )

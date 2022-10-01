@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"url-shortener/platform/observation"
-	"url-shortener/platform/observation/trace"
+	"url-shortener/foundation/observation"
+	"url-shortener/foundation/observation/trace"
 
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"

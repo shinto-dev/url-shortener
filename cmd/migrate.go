@@ -3,8 +3,8 @@ package cmd
 import (
 	"context"
 	"url-shortener/config"
-	"url-shortener/platform/data"
-	"url-shortener/platform/observation/logging"
+	"url-shortener/foundation/data"
+	"url-shortener/foundation/observation/logging"
 
 	"github.com/spf13/cobra"
 )

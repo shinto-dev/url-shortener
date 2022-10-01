@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 	"url-shortener/business/shorturl"
-	"url-shortener/platform/apperror"
+	"url-shortener/foundation/apperror"
 	"url-shortener/service/handlers"
 
 	"github.com/gorilla/mux"

@@ -3,7 +3,7 @@ package appcontext
 import (
 	"url-shortener/business/shorturl"
 	"url-shortener/config"
-	"url-shortener/platform/data"
+	"url-shortener/foundation/data"
 )
 
 type AppContext struct {

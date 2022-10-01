@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 	"url-shortener/config"
-	"url-shortener/platform/observation/logging"
+	"url-shortener/foundation/observation/logging"
 	"url-shortener/service"
 	"url-shortener/service/appcontext"
 

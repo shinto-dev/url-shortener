@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"time"
-	"url-shortener/platform/observation/trace"
+	"url-shortener/foundation/observation/trace"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

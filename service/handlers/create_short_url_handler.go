@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"url-shortener/business/shorturl"
-	"url-shortener/platform/apperror"
-	"url-shortener/platform/observation"
-	"url-shortener/platform/observation/logging"
-	"url-shortener/platform/web"
+	"url-shortener/foundation/apperror"
+	"url-shortener/foundation/observation"
+	"url-shortener/foundation/observation/logging"
+	"url-shortener/foundation/web"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
@@ -31,7 +32,7 @@ func HandleShortURLCreate(shortURLService shorturl.Core) http.HandlerFunc {
 		ShortURLToken string `json:"short_url_token"`
 	}
 
-	parseCreateShortURLRequest := func(w http.ResponseWriter, r *http.Request) (CreateShortURLRequest, error) {
+	parseCreateShortURLRequest := func(r *http.Request) (CreateShortURLRequest, error) {
 		var req CreateShortURLRequest
 		err := json.NewDecoder(r.Body).Decode(&req)
 		if err != nil {
@@ -41,29 +42,28 @@ func HandleShortURLCreate(shortURLService shorturl.Core) http.HandlerFunc {
 		return req, nil
 	}
 
-	return web.HandleRequest("create_short_url", func(w http.ResponseWriter, r *http.Request) error {
-		ctx := r.Context()
+	return web.HandleRequest("create_short_url",
+		func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+			req, err := parseCreateShortURLRequest(r)
+			if err != nil {
+				return err
+			}
 
-		req, err := parseCreateShortURLRequest(w, r)
-		if err != nil {
-			return err
-		}
+			observation.Add(ctx, logging.LField("original_url", req.OriginalURL))
+			if err := req.Validate(); err != nil {
+				return apperror.NewErrorWithCause(err, ErrInvalidInput, err.Error())
+			}
 
-		observation.Add(ctx, logging.LField("original_url", req.OriginalURL))
-		if err := req.Validate(); err != nil {
-			return apperror.NewErrorWithCause(err, ErrInvalidInput, err.Error())
-		}
+			shortURL, err := shortURLService.Create(ctx, shorturl.CreateRequest{
+				OriginalURL: req.OriginalURL,
+			})
+			if err != nil {
+				return err
+			}
 
-		shortURL, err := shortURLService.Create(ctx, shorturl.CreateRequest{
-			OriginalURL: req.OriginalURL,
+			_ = web.JSON(w, http.StatusCreated, CreateShortURLResponse{
+				ShortURLToken: shortURL.ShortURLPath,
+			})
+			return nil
 		})
-		if err != nil {
-			return err
-		}
-
-		_ = web.JSON(w, http.StatusCreated, CreateShortURLResponse{
-			ShortURLToken: shortURL.ShortURLPath,
-		})
-		return nil
-	})
 }

@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"url-shortener/config"
-	"url-shortener/platform/observation/logging"
+	"url-shortener/foundation/observation/logging"
 
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
