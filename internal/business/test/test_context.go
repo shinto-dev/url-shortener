@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/shinto-dev/url-shortener/business/shorturl/repo"
+	"github.com/shinto-dev/url-shortener/internal/business/shorturl/repo"
 
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"

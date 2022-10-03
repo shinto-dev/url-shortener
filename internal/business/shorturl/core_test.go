@@ -4,18 +4,18 @@ import (
 	"context"
 	"testing"
 
-	"github.com/shinto-dev/url-shortener/business/shorturl"
-	"github.com/shinto-dev/url-shortener/business/shorturl/repo"
-	"github.com/shinto-dev/url-shortener/business/test"
 	"github.com/shinto-dev/url-shortener/foundation/apperror"
 	"github.com/shinto-dev/url-shortener/foundation/observation/apm"
+	shorturl2 "github.com/shinto-dev/url-shortener/internal/business/shorturl"
+	"github.com/shinto-dev/url-shortener/internal/business/shorturl/repo"
+	test2 "github.com/shinto-dev/url-shortener/internal/business/test"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreate(t *testing.T) {
-	db := test.ConnectTestDB(t)
-	core := shorturl.NewShortURLCore(db)
+	db := test2.ConnectTestDB(t)
+	core := shorturl2.NewShortURLCore(db)
 
 	ctx := context.Background()
 	ctx = apm.WithAPM(ctx, "test") //fixme our tests should not worry about apm related configs
@@ -23,10 +23,10 @@ func TestCreate(t *testing.T) {
 	t.Run("should create a short url", func(t *testing.T) {
 		const originalURL = "https://www.google.com"
 
-		testCtx := test.NewTestCtx(db)
+		testCtx := test2.NewTestCtx(db)
 		defer testCtx.DeleteShortURLByOriginalURL(t, originalURL)
 
-		req := shorturl.CreateRequest{
+		req := shorturl2.CreateRequest{
 			OriginalURL: originalURL,
 		}
 
@@ -43,9 +43,9 @@ func TestCreate(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	db := test.ConnectTestDB(t)
-	core := shorturl.NewShortURLCore(db)
-	testCtx := test.NewTestCtx(db)
+	db := test2.ConnectTestDB(t)
+	core := shorturl2.NewShortURLCore(db)
+	testCtx := test2.NewTestCtx(db)
 
 	ctx := context.Background()
 	ctx = apm.WithAPM(ctx, "test") //fixme our tests should not worry about apm related configs
@@ -70,6 +70,6 @@ func TestGet(t *testing.T) {
 	t.Run("should return error if short url not found", func(t *testing.T) {
 		_, err := core.Get(ctx, "not-found")
 		assert.Error(t, err)
-		assert.True(t, apperror.Is(err, shorturl.ErrCodeShortURLNotFound))
+		assert.True(t, apperror.Is(err, shorturl2.ErrCodeShortURLNotFound))
 	})
 }

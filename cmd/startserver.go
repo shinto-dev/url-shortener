@@ -10,9 +10,8 @@ import (
 
 	"github.com/shinto-dev/url-shortener/config"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
-	"github.com/shinto-dev/url-shortener/service"
-	"github.com/shinto-dev/url-shortener/service/appcontext"
-
+	"github.com/shinto-dev/url-shortener/internal/service"
+	"github.com/shinto-dev/url-shortener/internal/service/appcontext"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )

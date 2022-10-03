@@ -4,11 +4,11 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/shinto-dev/url-shortener/business/shorturl"
 	"github.com/shinto-dev/url-shortener/foundation/apperror"
 	"github.com/shinto-dev/url-shortener/foundation/observation"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 	"github.com/shinto-dev/url-shortener/foundation/web"
+	"github.com/shinto-dev/url-shortener/internal/business/shorturl"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
