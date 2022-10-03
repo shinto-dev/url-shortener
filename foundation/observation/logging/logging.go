@@ -54,7 +54,7 @@ func getLogFields(ctx context.Context) *[]zap.Field {
 func getLogFieldsWithTraceID(ctx context.Context) []zap.Field {
 	logFields := *getLogFields(ctx)
 	traceID := trace.GetTraceID(ctx)
-	if traceID != "" {
+	if traceID != trace.EmptyTraceID {
 		logFields = append(logFields, zap.String("trace_id", traceID))
 	}
 	return logFields
