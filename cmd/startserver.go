@@ -8,8 +8,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/shinto-dev/url-shortener/config"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
+	"github.com/shinto-dev/url-shortener/internal/config"
 	"github.com/shinto-dev/url-shortener/internal/service"
 	"github.com/shinto-dev/url-shortener/internal/service/appcontext"
 	"github.com/spf13/cobra"

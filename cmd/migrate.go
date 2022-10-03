@@ -3,9 +3,9 @@ package cmd
 import (
 	"context"
 
-	"github.com/shinto-dev/url-shortener/config"
 	"github.com/shinto-dev/url-shortener/foundation/data"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
+	"github.com/shinto-dev/url-shortener/internal/config"
 
 	"github.com/spf13/cobra"
 )
