@@ -2,8 +2,8 @@ package appcontext
 
 import (
 	"github.com/shinto-dev/url-shortener/foundation/data"
-	"github.com/shinto-dev/url-shortener/internal/business/shorturl"
 	"github.com/shinto-dev/url-shortener/internal/config"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl"
 )
 
 type AppContext struct {

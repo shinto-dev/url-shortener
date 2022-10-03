@@ -3,8 +3,8 @@ package shorturl
 import (
 	"context"
 
-	"github.com/shinto-dev/url-shortener/internal/business/shorturl/repo"
-	"github.com/shinto-dev/url-shortener/internal/business/shorturl/shortid"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl/repo"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl/shortid"
 
 	"gorm.io/gorm"
 )

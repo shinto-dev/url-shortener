@@ -10,8 +10,8 @@ import (
 
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 	"github.com/shinto-dev/url-shortener/internal/config"
-	"github.com/shinto-dev/url-shortener/internal/service"
-	"github.com/shinto-dev/url-shortener/internal/service/appcontext"
+	"github.com/shinto-dev/url-shortener/internal/httpservice"
+	"github.com/shinto-dev/url-shortener/internal/httpservice/appcontext"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )
@@ -33,7 +33,7 @@ func runHTTServerFunc(conf config.Config) func(_ *cobra.Command, _ []string) {
 				Fatal("error while creating app context")
 		}
 
-		router := service.API(appCtx)
+		router := httpservice.API(appCtx)
 		server := http.Server{
 			Addr:    fmt.Sprintf(":%d", conf.HTTPServer.Port),
 			Handler: router,

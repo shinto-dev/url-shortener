@@ -6,9 +6,9 @@ import (
 
 	"github.com/shinto-dev/url-shortener/foundation/apperror"
 	"github.com/shinto-dev/url-shortener/foundation/observation/apm"
-	shorturl2 "github.com/shinto-dev/url-shortener/internal/business/shorturl"
-	"github.com/shinto-dev/url-shortener/internal/business/shorturl/repo"
-	test2 "github.com/shinto-dev/url-shortener/internal/business/test"
+	shorturl2 "github.com/shinto-dev/url-shortener/internal/core/shorturl"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl/repo"
+	test2 "github.com/shinto-dev/url-shortener/internal/core/test"
 
 	"github.com/stretchr/testify/assert"
 )

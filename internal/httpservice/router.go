@@ -1,4 +1,4 @@
-package service
+package httpservice
 
 import (
 	"net/http"
@@ -6,8 +6,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/shinto-dev/url-shortener/foundation/web"
-	"github.com/shinto-dev/url-shortener/internal/service/appcontext"
-	handlers2 "github.com/shinto-dev/url-shortener/internal/service/handlers"
+	"github.com/shinto-dev/url-shortener/internal/httpservice/appcontext"
+	handlers2 "github.com/shinto-dev/url-shortener/internal/httpservice/handlers"
 )
 
 func API(appCtx appcontext.AppContext) *mux.Router {

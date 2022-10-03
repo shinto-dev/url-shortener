@@ -8,7 +8,7 @@ import (
 	"github.com/shinto-dev/url-shortener/foundation/observation"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 	"github.com/shinto-dev/url-shortener/foundation/web"
-	shorturl2 "github.com/shinto-dev/url-shortener/internal/business/shorturl"
+	shorturl2 "github.com/shinto-dev/url-shortener/internal/core/shorturl"
 )
 
 func HandleRedirectURL(shortURLService shorturl2.Core) http.HandlerFunc {

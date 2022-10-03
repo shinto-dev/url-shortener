@@ -9,8 +9,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/shinto-dev/url-shortener/foundation/apperror"
-	shorturl2 "github.com/shinto-dev/url-shortener/internal/business/shorturl"
-	"github.com/shinto-dev/url-shortener/internal/service/handlers"
+	shorturl2 "github.com/shinto-dev/url-shortener/internal/core/shorturl"
+	"github.com/shinto-dev/url-shortener/internal/httpservice/handlers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
