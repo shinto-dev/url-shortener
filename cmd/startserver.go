@@ -39,24 +39,37 @@ func runHTTServerFunc(conf config.Config) func(_ *cobra.Command, _ []string) {
 			Handler: router,
 		}
 
+		serverErrors := make(chan error, 1)
+		sigquit := make(chan os.Signal, 1)
+		signal.Notify(sigquit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
 		go func() {
 			logging.WithFields(
 				zap.Int("port", conf.HTTPServer.Port),
 			).Info("starting HTTP server")
-			server.ListenAndServe()
+			serverErrors <- server.ListenAndServe()
 		}()
 
-		sigquit := make(chan os.Signal, 1)
-		signal.Notify(sigquit, os.Interrupt, syscall.SIGTERM)
+		select {
+		case err := <-serverErrors:
+			logging.WithFields(zap.Error(err)).
+				Fatal("error while running HTTP server")
+		case <-sigquit:
+			logging.WithFields(zap.Any("signal", sigquit)).
+				Info("gracefully shutting down the server")
 
-		<-sigquit
-		logging.WithFields().Info("gracefully shutting down the server")
+			defer logging.WithFields(zap.Any("signal", sigquit)).
+				Info("shutdown completed")
 
-		if err := server.Shutdown(context.Background()); err != nil {
-			logging.WithFields(zap.Error(err)).Error("unable to shutdown the server")
-			return
+			ctx, cancel := context.WithTimeout(context.Background(), conf.HTTPServer.ShutdownTimeout)
+			defer cancel()
+
+			if err := server.Shutdown(ctx); err != nil {
+				logging.WithFields(zap.Error(err)).
+					Error("unable to shutdown the server")
+				server.Close()
+				return
+			}
 		}
-
-		logging.WithFields().Info("server stopped")
 	}
 }

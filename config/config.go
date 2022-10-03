@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/iamolegga/enviper"
 	"github.com/pkg/errors"
@@ -13,7 +14,8 @@ import (
 type Environment string
 
 type HTTPServer struct {
-	Port int
+	Port            int
+	ShutdownTimeout time.Duration
 }
 
 type Database struct {
