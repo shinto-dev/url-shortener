@@ -9,12 +9,9 @@ COPY . .
 
 RUN apk add --no-cache git ca-certificates
 
-ARG CI_JOB_TOKEN
-ENV CI_JOB_TOKEN=$CI_JOB_TOKEN
-
 RUN go get -d
 RUN go build -o main .
-FROM golang:1.18-alpine AS runtime
+FROM alpine:3.16 AS runtime
 
 # Move to /dist directory as the place for resulting binary folder
 WORKDIR /dist
