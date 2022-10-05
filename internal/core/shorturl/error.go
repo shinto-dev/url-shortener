@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	ErrCodeShortURLNotFound = "short_url_not_found"
+	ErrCodeShortURLNotFound apperror.Code = "short_url_not_found"
 )
 
 var ErrShortURLNotFound = apperror.NewError(ErrCodeShortURLNotFound, "short url not found")

@@ -26,7 +26,8 @@ func HandleRedirectURL(shortURLService shorturl2.Core) http.HandlerFunc {
 				return err
 			}
 
-			http.Redirect(w, r, shortURL.ShortURLPath, http.StatusPermanentRedirect)
+			observation.Add(ctx, logging.LField("original_url", shortURL.OriginalURL))
+			http.Redirect(w, r, shortURL.OriginalURL, http.StatusPermanentRedirect)
 			return nil
 		})
 }
