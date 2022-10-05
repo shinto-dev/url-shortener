@@ -28,10 +28,15 @@ type Database struct {
 	DebugLog     bool
 }
 
+type Observation struct {
+	JaegerEndpoint string
+}
+
 type Config struct {
 	HTTPServer  HTTPServer
 	Environment Environment
 	Database    Database
+	Observation Observation
 }
 
 func (c *Config) Load() error {
