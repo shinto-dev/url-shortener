@@ -4,14 +4,12 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/shinto-dev/url-shortener/foundation/apperror"
-	"github.com/shinto-dev/url-shortener/foundation/observation"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 	"github.com/shinto-dev/url-shortener/foundation/web"
 	"github.com/shinto-dev/url-shortener/internal/core/shorturl"
-
-	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
 type CreateShortURLRequest struct {
@@ -32,23 +30,27 @@ func HandleShortURLCreate(shortURLService shorturl.Core) http.HandlerFunc {
 		ShortURLToken string `json:"short_url_token"`
 	}
 
+	errHandler := commonErrHandler(map[apperror.Code]*web.RequestError{
+		AppErrInvalidRequestBody: ErrInvalidRequestBody,
+	})
+
 	return web.HandleRequest("create_short_url",
 		func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 			var req CreateShortURLRequest
 			if err := web.Decode(r, &req); err != nil {
-				return apperror.NewError(ErrInvalidInput, "request body is invalid")
+				return errHandler(ctx, apperror.NewErrorWithCause(err, AppErrInvalidRequestBody))
 			}
 
-			observation.Add(ctx, logging.LField("original_url", req.OriginalURL))
+			logging.Add(ctx, logging.LField("original_url", req.OriginalURL))
 			if err := req.Validate(); err != nil {
-				return apperror.NewErrorWithCause(err, ErrInvalidInput, err.Error())
+				return validationErrorHandler(ctx, err)
 			}
 
 			shortURL, err := shortURLService.Create(ctx, shorturl.CreateRequest{
 				OriginalURL: req.OriginalURL,
 			})
 			if err != nil {
-				return err
+				return errHandler(ctx, err)
 			}
 
 			_ = web.JSON(w, http.StatusCreated, CreateShortURLResponse{

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/shinto-dev/url-shortener/foundation/observation"
 	"github.com/shinto-dev/url-shortener/foundation/observation/trace"
 
 	"github.com/stretchr/testify/assert"
@@ -19,7 +18,7 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 		FromContext(ctx).Debug("some debug log message")
 
 		firstLog := observedLogs.All()[0]
@@ -33,7 +32,7 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 		FromContext(ctx).Info("some info log message")
 
 		firstLog := observedLogs.All()[0]
@@ -47,7 +46,7 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 		FromContext(ctx).Warn("some warn log message")
 
 		firstLog := observedLogs.All()[0]
@@ -61,7 +60,7 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 
 		FromContext(ctx).Error("some error log message", errors.New("some error"))
 
@@ -78,7 +77,7 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 		FromContext(ctx).Fatal("some fatal log message", errors.New("some error"))
 
 		firstLog := observedLogs.All()[0]
@@ -91,7 +90,7 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 
 		FromContext(ctx).WithFields(zap.String("name2", "test2")).
 			Info("some error log message")
@@ -108,12 +107,12 @@ func TestLogCtx(t *testing.T) {
 		observedLogs := initLogger()
 
 		ctx := WithLogger(context.Background())
-		observation.Add(ctx,
+		Add(ctx,
 			LField("name", "sample test"),
 			LField("context", "test"),
 			LField("x", 2),
 		)
-		observation.Add(ctx,
+		Add(ctx,
 			LField("y", 4),
 		)
 		FromContext(ctx).Info("some log message")
@@ -132,7 +131,7 @@ func TestLogCtx(t *testing.T) {
 
 		ctx := WithLogger(context.Background())
 		ctx = trace.WithTraceID(ctx, "test-trace-id")
-		observation.Add(ctx, LField("name", "sample test"))
+		Add(ctx, LField("name", "sample test"))
 		FromContext(ctx).Info("some log message")
 
 		firstLog := observedLogs.All()[0]

@@ -8,4 +8,4 @@ const (
 	ErrCodeShortURLNotFound apperror.Code = "short_url_not_found"
 )
 
-var ErrShortURLNotFound = apperror.NewError(ErrCodeShortURLNotFound, "short url not found")
+var ErrShortURLNotFound = apperror.NewError(ErrCodeShortURLNotFound)

@@ -8,14 +8,6 @@ import (
 	"github.com/shinto-dev/url-shortener/foundation/observation/trace"
 )
 
-type FieldFn func(ctx context.Context)
-
-func Add(ctx context.Context, fieldFns ...FieldFn) {
-	for _, fieldFn := range fieldFns {
-		fieldFn(ctx)
-	}
-}
-
 type Config struct {
 	Context        string
 	TraceID        string
@@ -26,7 +18,7 @@ type Config struct {
 func WithObservation(ctx context.Context, config Config) context.Context {
 	if config.SupportLogging {
 		ctx = logging.WithLogger(ctx)
-		Add(ctx, logging.LField("context", config.Context))
+		logging.Add(ctx, logging.LField("context", config.Context))
 	}
 
 	if config.SupportAPM {
