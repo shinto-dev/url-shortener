@@ -37,4 +37,11 @@ services:
       DATABASE_USERNAME: root
       DATABASE_PASSWORD: root@123
       DATABASE_DATABASENAME: short_url
+      OBSERVATION_JAEGERENDPOINT: http://host.docker.internal:14268/api/traces
+  jaeger:
+    image: jaegertracing/all-in-one:1.22.0
+    container_name: jaeger
+    ports:
+      - 14268:14268 # jaeger-collector HTTP server (tracer provider)
+      - 16686:16686 # HTTP server (browser UI)
 

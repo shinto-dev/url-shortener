@@ -8,6 +8,8 @@ type logFieldsKeyType string
 
 const traceFieldKey = logFieldsKeyType("trace-key")
 
+const EmptyTraceID = "00000000-0000-0000-0000-000000000000"
+
 func WithTraceID(ctx context.Context, traceID string) context.Context {
 	return context.WithValue(ctx, traceFieldKey, traceID)
 }
@@ -15,7 +17,7 @@ func WithTraceID(ctx context.Context, traceID string) context.Context {
 func GetTraceID(ctx context.Context) string {
 	traceID, ok := ctx.Value(traceFieldKey).(string)
 	if !ok {
-		return ""
+		return EmptyTraceID
 	}
 
 	return traceID

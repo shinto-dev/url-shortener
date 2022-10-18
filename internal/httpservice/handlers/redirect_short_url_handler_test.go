@@ -6,12 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/shinto-dev/url-shortener/business/shorturl"
-	"github.com/shinto-dev/url-shortener/foundation/apperror"
-	"github.com/shinto-dev/url-shortener/service/handlers"
-
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl"
+	"github.com/shinto-dev/url-shortener/internal/httpservice/handlers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -22,8 +20,7 @@ func TestRedirectURL(t *testing.T) {
 	t.Run("should return not found if short url token is not found", func(t *testing.T) {
 		mockShortURLCore := shorturl.NewMockCore(t)
 		mockShortURLCore.On("Get", mock.Anything, "shorturl").
-			Return(shorturl.ShortURL{}, apperror.NewError(
-				shorturl.ErrCodeShortURLNotFound, "short url not found"))
+			Return(shorturl.ShortURL{}, shorturl.ErrShortURLNotFound)
 
 		req := httptest.NewRequest(http.MethodGet, "/shorturl", strings.NewReader(""))
 		w := httptest.NewRecorder()
@@ -49,7 +46,7 @@ func TestRedirectURL(t *testing.T) {
 	t.Run("should return redirect if short url token is found", func(t *testing.T) {
 		mockShortURLCore := shorturl.NewMockCore(t)
 		mockShortURLCore.On("Get", mock.Anything, "shorturl").
-			Return(shorturl.ShortURL{ShortURLPath: "https://google.com"}, nil)
+			Return(shorturl.ShortURL{OriginalURL: "https://google.com"}, nil)
 
 		req := httptest.NewRequest(http.MethodGet, "/shorturl", strings.NewReader(""))
 		w := httptest.NewRecorder()

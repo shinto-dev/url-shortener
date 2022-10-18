@@ -4,17 +4,16 @@ import (
 	"context"
 	"testing"
 
-	"github.com/shinto-dev/url-shortener/business/shorturl"
-	"github.com/shinto-dev/url-shortener/business/shorturl/repo"
-	"github.com/shinto-dev/url-shortener/business/test"
-	"github.com/shinto-dev/url-shortener/foundation/apperror"
 	"github.com/shinto-dev/url-shortener/foundation/observation/apm"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl"
+	"github.com/shinto-dev/url-shortener/internal/core/shorturl/repo"
+	test2 "github.com/shinto-dev/url-shortener/internal/core/test"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreate(t *testing.T) {
-	db := test.ConnectTestDB(t)
+	db := test2.ConnectTestDB(t)
 	core := shorturl.NewShortURLCore(db)
 
 	ctx := context.Background()
@@ -23,7 +22,7 @@ func TestCreate(t *testing.T) {
 	t.Run("should create a short url", func(t *testing.T) {
 		const originalURL = "https://www.google.com"
 
-		testCtx := test.NewTestCtx(db)
+		testCtx := test2.NewTestCtx(db)
 		defer testCtx.DeleteShortURLByOriginalURL(t, originalURL)
 
 		req := shorturl.CreateRequest{
@@ -43,9 +42,9 @@ func TestCreate(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	db := test.ConnectTestDB(t)
+	db := test2.ConnectTestDB(t)
 	core := shorturl.NewShortURLCore(db)
-	testCtx := test.NewTestCtx(db)
+	testCtx := test2.NewTestCtx(db)
 
 	ctx := context.Background()
 	ctx = apm.WithAPM(ctx, "test") //fixme our tests should not worry about apm related configs
@@ -70,6 +69,6 @@ func TestGet(t *testing.T) {
 	t.Run("should return error if short url not found", func(t *testing.T) {
 		_, err := core.Get(ctx, "not-found")
 		assert.Error(t, err)
-		assert.True(t, apperror.Is(err, shorturl.ErrCodeShortURLNotFound))
+		assert.EqualError(t, err, "error code: short_url_not_found")
 	})
 }

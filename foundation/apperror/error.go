@@ -9,25 +9,24 @@ import (
 type Code string
 
 type AppError struct {
-	Code    Code
-	Message string
-	Cause   error
+	Code  Code
+	Cause error
 }
 
-func NewError(code Code, message string) *AppError {
-	return &AppError{Code: code, Message: message}
+func NewError(code Code) *AppError {
+	return &AppError{Code: code}
 }
 
-func NewErrorWithCause(err error, code Code, message string) *AppError {
-	return &AppError{Code: code, Message: message, Cause: err}
+func NewErrorWithCause(err error, code Code) *AppError {
+	return &AppError{Code: code, Cause: err}
 }
 
 func (a *AppError) Error() string {
 	if a.Cause != nil {
-		return fmt.Sprintf("error code: %s, message: %s, cause: %s", a.Code, a.Message, a.Cause.Error())
+		return fmt.Sprintf("error code: %s, cause: %s", a.Code, a.Cause.Error())
 	}
 
-	return fmt.Sprintf("error code: %s, message: %s", a.Code, a.Message)
+	return fmt.Sprintf("error code: %s", a.Code)
 }
 
 func FindError(err error) *AppError {

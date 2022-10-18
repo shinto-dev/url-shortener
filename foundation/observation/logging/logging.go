@@ -35,6 +35,14 @@ func WithLogger(ctx context.Context) context.Context {
 	return context.WithValue(ctx, logFieldsKey, &fields)
 }
 
+type FieldFn func(ctx context.Context)
+
+func Add(ctx context.Context, fieldFns ...FieldFn) {
+	for _, fieldFn := range fieldFns {
+		fieldFn(ctx)
+	}
+}
+
 func LField(name string, value interface{}) func(ctx context.Context) {
 	return func(ctx context.Context) {
 		logFields := getLogFields(ctx)
@@ -54,7 +62,7 @@ func getLogFields(ctx context.Context) *[]zap.Field {
 func getLogFieldsWithTraceID(ctx context.Context) []zap.Field {
 	logFields := *getLogFields(ctx)
 	traceID := trace.GetTraceID(ctx)
-	if traceID != "" {
+	if traceID != trace.EmptyTraceID {
 		logFields = append(logFields, zap.String("trace_id", traceID))
 	}
 	return logFields

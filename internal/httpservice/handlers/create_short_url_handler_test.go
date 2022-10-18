@@ -9,9 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/shinto-dev/url-shortener/business/shorturl"
-	"github.com/shinto-dev/url-shortener/service/handlers"
-
+	shorturl2 "github.com/shinto-dev/url-shortener/internal/core/shorturl"
+	"github.com/shinto-dev/url-shortener/internal/httpservice/handlers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -77,7 +76,7 @@ func TestCreate(t *testing.T) {
 		})
 		w := httptest.NewRecorder()
 
-		mockShortURLService := shorturl.NewMockCore(t)
+		mockShortURLService := shorturl2.NewMockCore(t)
 		mockShortURLCreate(mockShortURLService, originalURL, "", expectedShortURLToken)
 		handler := handlers.HandleShortURLCreate(mockShortURLService)
 		handler(w, req)
@@ -94,9 +93,9 @@ func TestCreate(t *testing.T) {
 		})
 		w := httptest.NewRecorder()
 
-		mockShortURLService := shorturl.NewMockCore(t)
+		mockShortURLService := shorturl2.NewMockCore(t)
 		mockShortURLService.On("Create", mock.Anything, mock.Anything).
-			Return(shorturl.ShortURL{}, errors.New("unexpected error"))
+			Return(shorturl2.ShortURL{}, errors.New("unexpected error"))
 		handler := handlers.HandleShortURLCreate(mockShortURLService)
 		handler(w, req)
 
@@ -107,10 +106,10 @@ func TestCreate(t *testing.T) {
 
 }
 
-func mockShortURLCreate(mockShortURLService *shorturl.MockCore, originalURL, customAlias, expectedShortURLToken string) {
-	mockShortURLService.On("Create", mock.Anything, shorturl.CreateRequest{
+func mockShortURLCreate(mockShortURLService *shorturl2.MockCore, originalURL, customAlias, expectedShortURLToken string) {
+	mockShortURLService.On("Create", mock.Anything, shorturl2.CreateRequest{
 		OriginalURL: originalURL,
-	}).Return(shorturl.ShortURL{
+	}).Return(shorturl2.ShortURL{
 		ShortURLPath: expectedShortURLToken,
 	}, nil)
 }

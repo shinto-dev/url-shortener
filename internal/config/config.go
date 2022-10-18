@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/iamolegga/enviper"
 	"github.com/pkg/errors"
@@ -13,7 +14,8 @@ import (
 type Environment string
 
 type HTTPServer struct {
-	Port int
+	Port            int
+	ShutdownTimeout time.Duration
 }
 
 type Database struct {
@@ -26,10 +28,15 @@ type Database struct {
 	DebugLog     bool
 }
 
+type Observation struct {
+	JaegerEndpoint string
+}
+
 type Config struct {
 	HTTPServer  HTTPServer
 	Environment Environment
 	Database    Database
+	Observation Observation
 }
 
 func (c *Config) Load() error {

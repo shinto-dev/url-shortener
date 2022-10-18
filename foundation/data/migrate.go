@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/shinto-dev/url-shortener/foundation/observation"
 	"github.com/shinto-dev/url-shortener/foundation/observation/logging"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -29,7 +28,7 @@ type DBConfig struct {
 
 // MigrateUp performs all pending migrations.
 func MigrateUp(ctx context.Context, dbConfig DBConfig, migrationsFilePath string) error {
-	observation.Add(ctx,
+	logging.Add(ctx,
 		logging.LField("context", "migration"),
 		logging.LField("db_name", dbConfig.Database),
 		logging.LField("db_host", dbConfig.Hostname),
